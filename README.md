@@ -1,6 +1,6 @@
 <div align="center">
 
-# Avatar State Saver 
+# Remi-OSC 
 #### A VRChat OSC System by Cam
 
 
@@ -11,7 +11,7 @@
 
 
 ## Purpose
-To allow users to save and load the state of their avatar live and in game **(when combined with a compatible avatar)**, as well as to allow for haptic feedback control through the avatar's animator.  Avatar State Saver does **not** require mods - instead it makes use of the [Open Sound Control Protocol](https://en.wikipedia.org/wiki/Open_Sound_Control) as suppored by [VRChat](https://hello.vrchat.com/) to communicate with your avatar directly.
+To allow users to save and load the state of their avatar live and in game **(when combined with a compatible avatar)**, as well as to allow for haptic feedback control through the avatar's animator.  This app does **not** require mods - instead it makes use of the [Open Sound Control Protocol](https://en.wikipedia.org/wiki/Open_Sound_Control) as suppored by [VRChat](https://hello.vrchat.com/) to communicate with your avatar directly.
 
 <div align="center">
 

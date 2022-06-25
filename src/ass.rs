@@ -41,7 +41,7 @@ pub fn initialize_ass_dir() -> Result<String, String> {
     if !self::util::dir_exists(&ass_dir) {
         match fs::create_dir_all(&ass_dir) {
             Ok(_) => return Ok(ass_dir),
-            Err(_) => return Err("Failed to create Ass root directory.".to_string())
+            Err(_) => return Err("Failed to create Remi-OSC root directory.".to_string())
         }
     } else {
         println!("[*] ASS root directory found!");

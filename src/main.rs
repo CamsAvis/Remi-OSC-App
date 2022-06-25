@@ -90,6 +90,8 @@ fn start(sock: &UdpSocket, ass_dir: String, remi_ovr: ovr::RemiOVR) {
     let mut state: HashMap<String, ass::AssParam> = HashMap::new();
     let mut is_saving: bool = false;
 
+    println!("[++] Remi OSC up and running!");
+
     // Continuously read OSC data from port 9001.
     loop {
         /*
@@ -205,8 +207,7 @@ fn start(sock: &UdpSocket, ass_dir: String, remi_ovr: ovr::RemiOVR) {
 
 
 fn main() {
-    let path = self::ass::initialize_ass_dir().expect("[-] Failed to initialize ASS directory");
-    println!("[*] ASS root directory found.");
+    let path = self::ass::initialize_ass_dir().expect("[-] Failed to initialize Remi-OSC directory");
     
     /*
         Binds/creates a UDP socket to port 9001 to be used for communication with VRChat.
@@ -221,6 +222,7 @@ fn main() {
             } else {
                 println!("[!!] Failed to initialize OpenVR Runtime - Haptics will not be enabled. Is SteamVR Running?");
             }
+
             start(&sock, path, remi_ovr);
         },
         Err(_) => {
