@@ -1,0 +1,17 @@
+[package]
+name = "RemiOSC"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+winres = "0.1"
+
+[dependencies]
+rosc = "0.6.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+directories = "4.0.1"
+openvr = "0.6.0"
