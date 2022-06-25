@@ -11,7 +11,7 @@
 
 
 ## Purpose
-To allow users to save and load the state of their avatar live and in game **(when combined with a compatible avatar)**.  Avatar State Saver does **not** require mods - instead it makes use of the [Open Sound Control Protocol](https://en.wikipedia.org/wiki/Open_Sound_Control) as suppored by [VRChat](https://hello.vrchat.com/) to communicate with your avatar directly.
+To allow users to save and load the state of their avatar live and in game **(when combined with a compatible avatar)**, as well as to allow for haptic feedback control through the avatar's animator.  Avatar State Saver does **not** require mods - instead it makes use of the [Open Sound Control Protocol](https://en.wikipedia.org/wiki/Open_Sound_Control) as suppored by [VRChat](https://hello.vrchat.com/) to communicate with your avatar directly.
 
 <div align="center">
 
@@ -26,8 +26,6 @@ Avatars with native support can be found [In my shop](https://camsaviis.gumroad.
 2. Place the executable into the directory of your choosing
 3. Run the executale
 4. Launch VRChat and wear a [Compatible Avatar]()
-
-**Note: Running the executable will generate a new `avatar_state.json` file that will then be utilized by the system**
 
 ## License
 This software is available as-is under the [MIT License](https://mit-license.org/) - see [LICENSE](https://github.com/CamsAvis/OSC-AvatarStateSaver/blob/main/LICENSE) for more information.
