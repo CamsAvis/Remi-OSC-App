@@ -25,7 +25,7 @@ Avatars with native support can be found [In my shop](https://camsaviis.gumroad.
 1. Download the latest [Release](https://github.com/CamsAvis/OSC-AvatarStateSaver/releases) from [My GitHub](https://github.com/CamsAvis/OSC-AvatarStateSaver)
 2. Place the executable into the directory of your choosing
 3. Run the executale
-4. Launch VRChat and wear a [Compatible Avatar]()
+4. Launch VRChat and wear a [Compatible Avatar](https://camsaviis.gumroad.com/l/CamsRemi)
 
 ## License
 This software is available as-is under the [MIT License](https://mit-license.org/) - see [LICENSE](https://github.com/CamsAvis/OSC-AvatarStateSaver/blob/main/LICENSE) for more information.
