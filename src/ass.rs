@@ -1,6 +1,9 @@
 // Rust OSC library import
 extern crate rosc;
 
+// Time
+use std::{thread, time};
+// ROSC
 use rosc::OscType;
 // Serde
 use serde::{Serialize, Deserialize};
@@ -69,7 +72,7 @@ pub fn new_parameter_list() -> HashMap<String, AssParam> {
         ("Toggles/Acc/BeanieOff".to_string(), AssParam::Bool(false)),
         ("Toggles/Acc/GlovesOff".to_string(), AssParam::Bool(false)),
         ("Toggles/Acc/HeadphonesOff".to_string(), AssParam::Bool(false)),
-        ("Toggles/Acc/MaskOff".to_string(), AssParam::Bool(false)),
+        ("Toggles/Acc/MaskOff".to_string(), AssParam::Bool(true)),
         ("Toggles/Acc/ThighSocksOn".to_string(), AssParam::Bool(true)),
         ("Toggles/Acc/CalfSocksOn".to_string(), AssParam::Bool(false)),
         ("Toggles/Acc/SleevesOff".to_string(), AssParam::Bool(false)),
@@ -116,6 +119,7 @@ pub fn new_parameter_list() -> HashMap<String, AssParam> {
         ("Mat/Colors/SportsBraDark".to_string(), AssParam::Bool(true)),
         ("Mat/Colors/TankTopDark".to_string(), AssParam::Bool(true)),
         ("Mat/Colors/CropDark".to_string(), AssParam::Bool(true)),
+        ("Mat/Colors/ThighSocksDark".to_string(), AssParam::Bool(true)),
     ]);
 }
 
@@ -267,6 +271,13 @@ pub fn send_state(sock: &UdpSocket, load_index: usize, ass_dir: &str) {
                     }
                 }
             }
+
+            // sleep to give the animator time to update            
+            if !swimsuit_on {
+                thread::sleep(time::Duration::from_millis(250));
+                self::util::send_data(sock, "Toggles/SwimsuitOn", OscType::Bool(false));
+            }
+
             println!("[*] State Transmission End");
         },
         Err(e) => {
