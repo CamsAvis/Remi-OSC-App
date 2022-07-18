@@ -20,12 +20,6 @@ To allow users to save and load the state of their avatar live and in game **(wh
 
 ## Usage
 **This system only works on compatible avatars** - 
-Avatars with native support can be found [In my shop](https://camsaviis.gumroad.com/ "Browse My Shop!")
-
-1. Download the latest [Release](https://github.com/CamsAvis/OSC-AvatarStateSaver/releases) from [My GitHub](https://github.com/CamsAvis/OSC-AvatarStateSaver)
-2. Place the executable into the directory of your choosing
-3. Run the executale
-4. Launch VRChat and wear a [Compatible Avatar](https://camsaviis.gumroad.com/l/CamsRemi)
 
 ## License
 This software is available as-is under the [MIT License](https://mit-license.org/) - see [LICENSE](https://github.com/CamsAvis/OSC-AvatarStateSaver/blob/main/LICENSE) for more information.
