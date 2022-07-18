@@ -18,9 +18,6 @@ To allow users to save and load the state of their avatar live and in game **(wh
 [Read VRChat's OSC Docs](https://docs.vrchat.com/docs/osc-overview)
 </div>
 
-## Usage
-**This system only works on compatible avatars** - 
-
 ## License
 This software is available as-is under the [MIT License](https://mit-license.org/) - see [LICENSE](https://github.com/CamsAvis/OSC-AvatarStateSaver/blob/main/LICENSE) for more information.
 
