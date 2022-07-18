@@ -1,32 +1,36 @@
+// Cam wants a pretty camel case name
+#![allow(non_snake_case)]
 // Rust OSC library import
 extern crate rosc;
 
-use ass::{AssParam, send_state};
+//use ass::load_state;
+use serde::{Deserialize, Serialize};
+//use ass::{AssParam, send_state};
 // Serde
-use serde::{Serialize, Deserialize};
+//use serde::{Serialize, Deserialize};
 //use serde_json::{Serializer, Deserializer, to_string, Value};
-use serde_json::{self, Value};
+use serde_json;
 // ROSC encoder import
-use rosc::encoder;
+//use rosc::encoder;
 // ROSC types (Message types / Packet types / ROSC arg types
-use rosc::{OscMessage, OscPacket, OscType};
+use rosc::{OscPacket, OscType};
 use std::collections::HashMap;
-use std::fs::read_dir;
+use std::fs;
 // IPv4 Address / Udp Socket object
-use std::net::{SocketAddrV4, UdpSocket};
+use std::net::UdpSocket;
 // From String Trait
-use std::str::FromStr;
+//use std::str::FromStr;
 // Duration struct
-use std::time::Duration;
+//use std::time::Duration;
 // Proc Environment / 32 bit float / thread lib
-use std::io::{Write, Read};
-use std::{fs, env, f32, thread};
-use std::path::Path;
-use directories::BaseDirs;
+//use std::io::{Write, Read};
+use std::f32;
+//use std::path::Path;
+//use directories::BaseDirs;
 
 // OpenVR
 #[path = "ovr.rs"] mod ovr;
-use openvr::{TrackedControllerRole};
+use openvr::TrackedControllerRole;
 
 // ASS
 #[path = "ass.rs"] mod ass;
@@ -52,6 +56,8 @@ fn parse_id(args: Vec<OscType>) -> Option<String> {
     Takes in serde_json value and converts it to its
     cooresponding OscType value
  */
+/*
+#[allow(dead_code)]
 fn val_to_osc(v: &Value) -> OscType {
     match v {
         serde_json::Value::Bool(b) => return OscType::Bool(*b),
@@ -74,7 +80,7 @@ fn val_to_osc(v: &Value) -> OscType {
             return OscType::Nil;
         }
     }
-}
+}*/
 
 
 /*
@@ -206,14 +212,113 @@ fn start(sock: &UdpSocket, ass_dir: String, remi_ovr: ovr::RemiOVR) {
 }
 
 
+#[derive(Serialize, Deserialize, Debug)]
+struct OSCOptions {
+    bind_host: String,
+    bind_port: String,
+}
+
+impl Default for OSCOptions {
+    fn default() -> Self {
+        OSCOptions { bind_host: "127.0.0.1".to_string(), bind_port: "9001".to_string() }
+    }
+}
+
+impl OSCOptions {
+    fn default_config_write(path: &String) -> bool {
+        let json_data = match serde_json::to_string(&OSCOptions::default()) {
+            Ok(jd) => jd,
+            Err(e) => {println!("[!] Failed to serialize OSCOptions default! | Err: {}", e);return false;}
+        };
+
+        match fs::write(
+            path, 
+            json_data
+        ) {
+            Ok(_) => return true,
+            Err(e) => {println!("[!] Failed to write OSCOptions default! | Err: {}", e); return false;}
+        }
+    }
+
+    fn read_config(path: &String) -> Self {
+        match fs::read_to_string(path) {
+            Ok(nc) => match serde_json::from_str(&nc) {
+                Ok(net_config) => {
+                    return net_config;
+                },
+                Err(e) => {
+                    println!("[!] Failed to serialize NetConfig! | Err: {}", e);
+                    println!("[!] Continuing with default config! No config will be saved!");
+                    return OSCOptions::default();
+                }
+            },
+            Err(e) => {
+                println!("[!] Failed to read NetConfig file! | Err: {}", e);
+                println!("[!] Continuing with default config! No config will be saved!");
+                return OSCOptions::default();
+            }
+        }
+    }
+}
+
+fn load_net_config() -> OSCOptions {
+
+    let config_dir = format!("{}\\AppData\\LocalLow\\VRChat\\VRChat\\OSC\\ASS\\NetConfig", util::get_user_home_dir());
+    let net_conf_file = format!("{}\\NetConfig.json", config_dir);
+
+    if !util::dir_exists(&config_dir) {
+    
+        if let Ok(()) = fs::create_dir_all(config_dir) {
+
+            println!("[+] Created NetConfig dir!");
+    
+            if OSCOptions::default_config_write(&net_conf_file) {
+                println!("[+] Wrote default NetConfig!");
+            } else {
+                println!("[!] Failed to write default NetConfig!");
+            }
+    
+        } else {
+            println!("[+] OSC NetConfig dir exists.");
+
+            if !util::file_exists(&net_conf_file) {
+                if OSCOptions::default_config_write(&net_conf_file) {
+                    println!("[+] Wrote default NetConfig!");
+                } else {
+                    println!("[!] Failed to write default NetConfig!");
+                }
+            }
+        }
+    } else {
+
+        if !util::file_exists(&net_conf_file) {
+
+            if OSCOptions::default_config_write(&net_conf_file) {
+                println!("[+] Wrote default NetConfig!");
+            } else {
+                println!("[!] Failed to write default NetConfig!");
+            }
+        }
+    }
+
+    return OSCOptions::read_config(&net_conf_file);
+
+}
+
 fn main() {
     let path = self::ass::initialize_ass_dir().expect("[-] Failed to initialize Remi-OSC directory");
     
+    // Load Network Configuration
+    let net_config = load_net_config();
+
+    // Load state Tests
+    //let _ = load_state("avtr_d9201c0d-667d-4c0d-8bc4-d379068afa36");
+    //let _ = load_state("avtr_7fe42546-7e40-4382-9db6-9a83677e17ee");
     /*
         Binds/creates a UDP socket to port 9001 to be used for communication with VRChat.
         VRChat binds to UDP port 9000.
     */
-    match UdpSocket::bind(format!("127.0.0.1:9001")) {
+    match UdpSocket::bind(format!("{}:{}", net_config.bind_host, net_config.bind_port)) {
         Ok(sock) => {
             println!("[*] Remi OSC starting up!");
             let remi_ovr = ovr::RemiOVR::new();
