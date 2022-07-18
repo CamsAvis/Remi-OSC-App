@@ -3,6 +3,7 @@
 // Rust OSC library import
 extern crate rosc;
 
+//use ass::load_state;
 use serde::{Deserialize, Serialize};
 //use ass::{AssParam, send_state};
 // Serde
@@ -307,8 +308,12 @@ fn load_net_config() -> OSCOptions {
 fn main() {
     let path = self::ass::initialize_ass_dir().expect("[-] Failed to initialize Remi-OSC directory");
     
+    // Load Network Configuration
     let net_config = load_net_config();
 
+    // Load state Tests
+    //let _ = load_state("avtr_d9201c0d-667d-4c0d-8bc4-d379068afa36");
+    //let _ = load_state("avtr_7fe42546-7e40-4382-9db6-9a83677e17ee");
     /*
         Binds/creates a UDP socket to port 9001 to be used for communication with VRChat.
         VRChat binds to UDP port 9000.

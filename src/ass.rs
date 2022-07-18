@@ -164,22 +164,34 @@ fn vrc_state_to_map(state: Value) -> HashMap<String, AssParam> {
     If file exists return AvatarState as retrieved from the file
  */
 pub fn load_state(avatar_id: &str) -> Option<HashMap<String, AssParam>> {
+
     let avatar_data_dir = format!("{}\\AppData\\LocalLow\\VRChat\\VRChat\\LocalAvatarData", util::get_user_home_dir());
     let dirs = fs::read_dir(&avatar_data_dir).expect(format!("Fail to read dir {}", &avatar_data_dir).as_str());
+
+    let mut param_map: Option<HashMap<String, AssParam>> = None;
+
     for dir in dirs {
         //println!("Dir: {:?}", dir);
         match dir {
             Ok(entry) => {
+
                 let avatar_id_path = format!("{}\\{}", entry.path().to_str().unwrap(), &avatar_id);
-                let file = fs::read_to_string(&avatar_id_path).unwrap_or_default();
-                match serde_json::from_str::<Value>(&file) {
+                let file = match fs::read(&avatar_id_path) {
+                    Ok(con) => con,
+                    Err(_e) => {
+                        //println!("[!] Failed to read in UTF-8! | Err: {}", e);
+                        vec![]
+                    }
+                };
+
+                match serde_json::from_slice::<Value>(&file) {
                     Ok(state) => {
-                        println!("[*] Found file {:?}", &avatar_id_path);
-                        return Some(vrc_state_to_map(state));
+                        //println!("[*] Found file {:?}", &avatar_id_path);
+                        param_map = Some(vrc_state_to_map(state));
                     },
-                    Err(e) => {
-                        println!("[-] Error loading state from file: {:?}\n    Using default parameter list", e);
-                        return Some(new_parameter_list());
+                    Err(_e) => {
+                        //println!("[-] Error loading state from file: {:?}\n    Using default parameter list", e);
+                        param_map = Some(new_parameter_list());
                     }
                 }
             },
@@ -189,7 +201,13 @@ pub fn load_state(avatar_id: &str) -> Option<HashMap<String, AssParam>> {
         }
     }
 
-    return None;
+    if let None = param_map {
+        println!("[{}] Failed to load VRChat avatar data.", avatar_id);
+    } else {
+        println!("[{}] Loaded VRChat avatar data.", avatar_id);
+    }
+
+    return param_map;
 }
 
 /*
