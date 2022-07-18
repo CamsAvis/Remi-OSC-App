@@ -6,6 +6,7 @@ use std::{path::Path, net::UdpSocket};
 pub fn dir_exists(p: &String) -> bool {
     Path::new(&p).is_dir()
 }
+#[allow(dead_code)]
 pub fn file_exists(p: &String) -> bool {
     Path::new(&p).is_file()
 }
