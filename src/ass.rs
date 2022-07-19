@@ -251,12 +251,12 @@ pub fn send_state(sock: &UdpSocket, load_index: usize, ass_dir: &str) {
                     to the item that should be toggled ON, and my animator will take
                     care of the rest.
                 */
-                if (param_name.contains("Top") || param_name.contains("Bot")) && swimsuit_on {
+                if (param_name.contains("Tops") || param_name.contains("Bot")) && swimsuit_on {
                     println!("Skipping {} - Swimsuit is on", param_name);
                     continue;
                 } 
 
-                if param_name.contains("Top") && !swimsuit_on   {
+                if param_name.contains("Tops") && !swimsuit_on   {
                     match ass_param {
                         AssParam::Bool(b) => {
                             if b {
